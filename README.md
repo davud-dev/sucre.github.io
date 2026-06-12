@@ -20,7 +20,8 @@ yeah, i agree!
 ![Total Downloads](https://img.shields.io/github/downloads/davud-dev/sucre/total)
 
 &emsp;Anyways, it has *clean*/*readable* syntax<sup><sub>thanks captain obvious!</sub></sup> and *flexible* rules.
-For example, let's take this simple import line `import_pack: output -> out|allow any_type & any_length| .`:
+For example, let's take this simple import line,\
+`import_pack: output -> out|allow any_type & any_length| .`:
 * `import_pack:` -> prefix for package importing.
 * `output -> out` -> specifies the output package, but it isn't actually importing the out function, it's actually creating a new function named 'out' that is the 1st(and only) output function.
 * `|allows any_type & any_length|` -> `allows` keyword specific to new package function for specifying any limits, but `any_type & any_length` just practically mean it's your average output function. We could've also used the `anyy` keyword that means the same thing but it's shortened, but this was for the sake of readabillity and understanding.
