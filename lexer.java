@@ -1,3 +1,4 @@
+import java.util.map;
 public class code { 
   static int pos = 0;
   static int line = 1;
@@ -67,7 +68,7 @@ public class code {
         case '"', '\'' -> {
           String value = "";
           move();
-          while(source.charAt(pos) != current) {value += source.charAt(pos); move()};
+          while(source.charAt(pos) != current && pos < source.length) {value += source.charAt(pos); move()};
           token("STRING", value);
           move();
         };
@@ -75,20 +76,24 @@ public class code {
         case '\n' -> {line += 1; column = 1; move()};
         case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' -> {
           String value2 = "";
-          while(digit(source.charAt(pos))) {value2 += source.charAt(pos); move()};
+          while(digit(source.charAt(pos)) && pos < source.length) {value2 += String.valueOf(source.charAt(pos)); move()};
+          if(source.charAt(pos) == '.' && pos < source.length) {value2 += String.valueOf(source.charAt(pos)); move()};
+          while(digit(source.charAt(pos)) && pos < source.length) {value2 += String.valueOf(source.charAt(pos)); move()};
           token("NUMBER", value2);
         };
         default -> {
           if(letter(current)) {
             String value3 = "";
-            while(alpha(source.charAt(pos)) || source.charAt(pos) == '_') {value3 += source.charAt(pos); move()};
+            while(alpha(source.charAt(pos)) || source.charAt(pos) == '_' && pos < source.length) {value3 += source.charAt(pos); move()};
             String type = keywords.get(value3);
             if(type != null) {token(type + "_KEYWORD", value3)} else {token("IDENTIFIER", value3)};
           };
+          String type = simples.get(current);
+          if(type != null) {token(type + "_KEYWORD", current)} else {throw new RuntimeException("Unrecognized character '" + String.valueOf(current) + "' at line " + line + ", column " + column + ".")};
         };
       };
     };
     token("EOF", null);
-    return List;
+    return tokens;
   };
 };
