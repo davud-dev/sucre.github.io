@@ -1,4 +1,8 @@
 public class code { 
+  static int pos = 0;
+  static int line = 1;
+  static int column = 1;
+  static List<String[]> tokens = new ArrayList<>();
   //helper functions
   static boolean digit(char x) {return x >= '0' && x <= '9'};
   static boolean letter(char x) {return (x >= 'a' && x <= 'z') || (x >= 'A' && x <= 'Z')};
@@ -6,24 +10,20 @@ public class code {
   static void move() {pos += 1; column += 1};
   static void move(int n) {pos += n; column += n};
   static void token(String type, String value) {tokens.add(new String[]{type, value})};
-  static List<String[]> tokens = new ArrayList<>();
   //lexer
   static lexer(String source) {
-    int pos = 0;
-    int line = 1;
-    int column = 1;
-    final Map<char, String> simples = Map.of(
-      '(', "LPAREN",
-      ')', "RPAREN",
-      '[', "LBRACK",
-      ']', "RBRACK",
-      '<', "LAB",
-      '>', "RAB",
-      '|', "PIPE",
-      ':', "COLON",
-      ',', "COMMA",
-      '&', "AND",
-      '.', "PERIOD"
+    final Map<Character, String> simples = Map.ofEntries(
+      Map.entry('(', "LPAREN"),
+      Map.entry(')', "RPAREN"),
+      Map.entry('[', "LBRACK"),
+      Map.entry(']', "RBRACK"),
+      Map.entry('<', "LAB"),
+      Map.entry('>', "RAB"),
+      Map.entry('|', "PIPE"),
+      Map.entry(':', "COLON"),
+      Map.entry(',', "COMMA"),
+      Map.entry('&', "AND"),
+      Map.entry('.', "PERIOD")
     );
     final Map<String, String> keywords = Map.ofEntries(
       //program
@@ -49,7 +49,7 @@ public class code {
       Map.entry("boolean", "BOOLEAN_TYPE"),
       Map.entry("any", "ANY_TYPE"),
       Map.entry("empty", "VALUELESS_DECLARE"),
-      Map.entry("
+      Map.entry("stuck", "UNCHANGEABLE_DECLARE");
       Map.entry("equals", "EQ"),
       //conditions
       Map.entry("is", "COND_EQ"),
@@ -67,7 +67,7 @@ public class code {
         case '"', '\'' -> {
           String value = "";
           move();
-          while(source.charAt(pos) !== current) {value += source.charAt(pos); move()};
+          while(source.charAt(pos) != current) {value += source.charAt(pos); move()};
           token("STRING", value);
           move();
         };
@@ -89,5 +89,6 @@ public class code {
       };
     };
     token("EOF", null);
+    return List;
   };
 };
