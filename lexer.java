@@ -6,12 +6,12 @@ public class code {
   static void move() {pos += 1; column += 1};
   static void move(int n) {pos += n; column += n};
   static void token(String type, String value) {tokens.add(new String[]{type, value})};
+  static List<String[]> tokens = new ArrayList<>();
   //lexer
   static lexer(String source) {
     int pos = 0;
     int line = 1;
     int column = 1;
-    List<String[]> tokens = new ArrayList<>();
     final Map<char, String> simples = Map.of(
       '(', "LPAREN",
       ')', "RPAREN",
@@ -26,6 +26,10 @@ public class code {
       '.', "PERIOD"
     );
     final Map<String, String> keywords = Map.ofEntries(
+      //program
+      Map.entry("start_it", "PROGRAM_START"),
+      Map.entry("pause_it_for", "PROGRAM_PAUSE"),
+      Map.entry("end_it", "PROGRAM_END"),
       //packages
       Map.entry("import_pack", "IMPORT_PACKAGE"),
       Map.entry("allows", "ALLOW"),
@@ -45,6 +49,7 @@ public class code {
       Map.entry("boolean", "BOOLEAN_TYPE"),
       Map.entry("any", "ANY_TYPE"),
       Map.entry("empty", "VALUELESS_DECLARE"),
+      Map.entry("
       Map.entry("equals", "EQ"),
       //conditions
       Map.entry("is", "COND_EQ"),
@@ -54,7 +59,7 @@ public class code {
       Map.entry("greater_equals", "GREATER_EQ"),
       Map.entry("then", "COND_BODY_START"),
       Map.entry("do", "LOOP_START"),
-      Map.entry("finish", "BLOCK_FINISH"),
+      Map.entry("finish", "BLOCK_FINISH")
     );
     while(pos < source.length()) {
       char current = source.charAt(pos);
@@ -83,5 +88,6 @@ public class code {
         };
       };
     };
+    token("EOF", null);
   };
 };
