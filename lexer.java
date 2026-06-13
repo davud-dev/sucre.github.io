@@ -4,7 +4,7 @@ public class code {
     int line = 1;
     int column = 1;
     List<String[]> tokens = new ArrayList<>();
-    final Map<char, String> Simples = Map.of(
+    final Map<char, String> simples = Map.of(
       '(', "LPAREN",
       ')', "RPAREN",
       '[', "LBRACK",
@@ -17,18 +17,36 @@ public class code {
       '&', "AND",
       '.', "PERIOD"
     );
-    final Map<String, String> Keywords = Map.of(
-      "import", "IMPORT",
-      "pack", "PACKAGE",
-      "allows", "ALLOW",
-      "anyy", "ANY_ARG",
-      "output", "OUTPUT_PACK",
-      "input", "INPUT_PACK",
-      "new", "NEW_PACK",
-      "uses", "FUNC_DEF",
-      "has", "FUNC_CALL_ARG",
-      "equals", "EQ",
-      "greater_than", "GREATER"
+    final Map<String, String> keywords = Map.ofEntries(
+      //packages
+      Map.entry("import_pack", "IMPORT_PACKAGE"),
+      Map.entry("allows", "ALLOW"),
+      Map.entry("anyy", "ANY_ARG"),
+      Map.entry("new", "NEW_PACK"),
+      Map.entry("output", "OUTPUT_PACK"),
+      Map.entry("input", "INPUT_PACK"),
+      //functions
+      Map.entry("function", "FUNC_DEF"),
+      Map.entry("uses", "FUNC_DEF_BODY"),
+      Map.entry("has", "FUNC_CALL_ARG"),
+      //variables
+      Map.entry("string", "TEXT_STRING_TYPE"),
+      Map.entry("integer", "INTEGER_TYPE"),
+      Map.entry("binteger", "BIG_INTEGER_TYPE"),
+      Map.entry("float", "FLOAT_TYPE"),
+      Map.entry("boolean", "BOOLEAN_TYPE"),
+      Map.entry("any", "ANY_TYPE",
+      Map.entry("empty", "VALUELESS_DECLARE"),
+      Map.entry("equals", "EQ"),
+      //conditions
+      Map.entry("is", "COND_EQ"),
+      Map.entry("greater_than", "GREATER"),
+      Map.entry("smaller_than", "SMALLER"),
+      Map.entry("smaller_equals", "SMALLER_EQ"),
+      Map.entry("greater_equals", "GREATER_EQ"),
+      Map.entry("then", "COND_BODY_START"),
+      Map.entry("do", "LOOP_START"),
+      Map.entry("finish", "BLOCK_FINISH"),
     );
     boolean digit(char x) {return x >= '0' && x <= '9'};
     boolean letter(char x) {return (x >= 'a' && x <= 'z') || (x >= 'A' && x <= 'Z')};
@@ -61,7 +79,8 @@ public class code {
         default:
           if(letter(current)) {
             String value3 = "";
-            while(digit(source.charAt(pos))) {value3 += source.charAt(pos); move()};
-            if(
+            while(alpha(source.charAt(pos)) || source.charAt(pos) == '_') {value3 += source.charAt(pos); move()};
+            String type = keywords.get(value3);
+            if(type != null) {token(type + "_KEYWORD", value3)} else {token("IDENTIFIER", value3)};
       };
 };
